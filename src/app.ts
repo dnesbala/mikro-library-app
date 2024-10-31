@@ -9,6 +9,8 @@ export const createApp = async () => {
   const orm = await MikroORM.init(mikroOrmConfig);
   const forkedOrm = orm.em.fork();
 
+  app.use(express.json());
+
   app.use("/api/authors", authorRoutes(forkedOrm));
 
   return app;
