@@ -9,6 +9,9 @@ export class Book {
   @Property()
   title!: string;
 
+  @Property()
+  publishedYear!: number;
+
   // many books can be written by a single author
   @ManyToOne(() => Author)
   author!: Author;
