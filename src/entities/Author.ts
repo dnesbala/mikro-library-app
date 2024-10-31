@@ -15,6 +15,9 @@ export class Author {
   @Property()
   name!: string;
 
+  @Property()
+  biography?: string;
+
   @OneToMany(() => Book, (book) => book.author)
   books = new Collection<Book>(this);
 }
