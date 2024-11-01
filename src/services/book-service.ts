@@ -59,4 +59,17 @@ export class BookService {
     await this.em.removeAndFlush(book);
     return book;
   }
+
+  async searchBooks(query: string) {
+    return await this.em.find(
+      Book,
+      {
+        $or: [
+          { title: { $ilike: `%${query}%` } },
+          { author: { name: { $ilike: `%${query}%` } } },
+        ],
+      },
+      { populate: ["author"] }
+    );
+  }
 }

@@ -18,6 +18,18 @@ export const bookRoutes = (em: EntityManager) => {
     }
   });
 
+  router.get("/search", async (req: Request, res: Response): Promise<any> => {
+    const { query } = req.query;
+    try {
+      const books = await service.searchBooks(String(query));
+      res.status(200).json({
+        data: books,
+      });
+    } catch (err) {
+      handleApiError(res, err);
+    }
+  });
+
   router.get("/:id", async (req: Request, res: Response): Promise<any> => {
     try {
       const book = await service.getBookById(Number(req.params.id));
