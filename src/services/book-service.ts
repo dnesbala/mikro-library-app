@@ -72,4 +72,16 @@ export class BookService {
       { populate: ["author"] }
     );
   }
+
+  async getBooksPaginated(
+    page: number,
+    limit: number
+  ): Promise<{ books: Book[]; totalCount: number }> {
+    const offset = (page - 1) * limit;
+
+    const books = await this.em.find(Book, {}, { limit, offset });
+    const totalCount = await this.em.count(Book);
+
+    return { books, totalCount };
+  }
 }

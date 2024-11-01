@@ -11,8 +11,25 @@ export const bookRoutes = (em: EntityManager) => {
 
   router.get("/", async (req: Request, res: Response): Promise<any> => {
     try {
-      const books = await service.getAllBooks();
-      return res.status(200).json({ data: books });
+      const page: number = Number(req.query.page) || 1;
+      const limit: number = Number(req.query.limit) || 10;
+
+      const { books, totalCount } = await service.getBooksPaginated(
+        page,
+        limit
+      );
+
+      const totalPages = Math.ceil(totalCount / limit);
+      const nextPage = page < totalPages ? page + 1 : null;
+      const prevPage = page > 1 ? page - 1 : null;
+
+      return res.status(200).json({
+        totalCount,
+        totalPages,
+        prevPage,
+        nextPage,
+        data: books,
+      });
     } catch (err) {
       handleApiError(res, err);
     }
